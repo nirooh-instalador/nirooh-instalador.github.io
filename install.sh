@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Defina o URL do executável
-EXECUTABLE_URL="https://https://nirooh-instalador.github.io/nirooh.zip"
+ZIP_URL="https://nirooh-instalador.github.io/nirooh.zip"
+ZIP_URL="nirooh.zip"
 EXECUTABLE_NAME="nirooh"
 INSTALL_DIR="/usr/local/bin"
 CRON_JOB="*/15 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
@@ -14,14 +15,42 @@ check_root() {
     fi
 }
 
-# Baixar o executável
-download_executable() {
-    echo "Baixando o executável de $EXECUTABLE_URL..."
-    curl -o "$INSTALL_DIR/$EXECUTABLE_NAME" "$EXECUTABLE_URL"
+# Verificar e instalar dependências (unzip)
+install_dependencies() {
+    if ! command -v unzip &>/dev/null; then
+        echo "Instalando a dependência 'unzip'..."
+        apt-get update && apt-get install -y unzip
+        if [[ $? -ne 0 ]]; then
+            echo "Falha ao instalar o 'unzip'." >&2
+            exit 1
+        fi
+    fi
+}
+
+# Baixar o arquivo zip
+download_zip() {
+    echo "Baixando o arquivo zip de $ZIP_URL..."
+    curl -o "/tmp/$ZIP_NAME" "$ZIP_URL"
     if [[ $? -ne 0 ]]; then
-        echo "Falha ao baixar o executável." >&2
+        echo "Falha ao baixar o arquivo zip." >&2
         exit 1
     fi
+    echo "Arquivo zip baixado em /tmp/$ZIP_NAME."
+}
+
+# Descompactar o arquivo zip
+unzip_executable() {
+    echo "Descompactando o arquivo zip..."
+    unzip -o "/tmp/$ZIP_NAME" -d "/tmp/"
+    if [[ $? -ne 0 ]]; then
+        echo "Falha ao descompactar o arquivo zip." >&2
+        exit 1
+    fi
+    if [[ ! -f "/tmp/$EXECUTABLE_NAME" ]]; then
+        echo "Executável não encontrado no zip." >&2
+        exit 1
+    fi
+    mv "/tmp/$EXECUTABLE_NAME" "$INSTALL_DIR/"
     chmod +x "$INSTALL_DIR/$EXECUTABLE_NAME"
     echo "Executável instalado em $INSTALL_DIR."
 }
@@ -41,7 +70,9 @@ setup_cron() {
 # Execução principal
 main() {
     check_root
-    download_executable
+    install_dependencies
+    download_zip
+    unzip_executable
     setup_cron
 }
 
