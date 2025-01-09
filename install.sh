@@ -51,13 +51,19 @@ unzip_executable() {
 }
 
 setup_cron() {
-    echo "Configurando o crontab para rodar a cada 15 minutos..."
-    (crontab -l 2>/dev/null; echo "$CRON_JOB") | crontab -
-    if [[ $? -eq 0 ]]; then
-        echo "Crontab configurado com sucesso."
+    echo "Verificando se o crontab já está configurado..."
+    EXISTING_CRON=$(crontab -l 2>/dev/null | grep -F "$INSTALL_DIR/$EXECUTABLE_NAME")
+    if [[ -z "$EXISTING_CRON" ]]; then
+        echo "Configurando o crontab para rodar a cada 15 minutos..."
+        (crontab -l 2>/dev/null; echo "$CRON_JOB") | crontab -
+        if [[ $? -eq 0 ]]; then
+            echo "Crontab configurado com sucesso."
+        else
+            echo "Falha ao configurar o crontab." >&2
+            exit 1
+        fi
     else
-        echo "Falha ao configurar o crontab." >&2
-        exit 1
+        echo "Crontab já está configurado para este executável."
     fi
 }
 
