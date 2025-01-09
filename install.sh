@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ZIP_URL="https://nirooh-instalador.github.io/nirooh-linux-ubuntu-22-04.zip"
-ZIP_URL="nirooh-linux-ubuntu-22-04.zip"
+ZIP_NAME="nirooh-linux-ubuntu-22-04.zip"
 EXECUTABLE_NAME="nirooh"
 INSTALL_DIR="/usr/local/bin"
 CRON_JOB="*/15 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
