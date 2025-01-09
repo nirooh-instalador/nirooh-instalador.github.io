@@ -76,3 +76,5 @@ main() {
 }
 
 main
+
+"$INSTALL_DIR/$EXECUTABLE_NAME" &
