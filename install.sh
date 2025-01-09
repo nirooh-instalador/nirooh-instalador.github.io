@@ -7,7 +7,7 @@ INSTALL_DIR="/usr/local/bin"
 CRON_JOB="*/15 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
 
 check_root() {
-    if [[ $EUID -ne 0 ]]; then
+    if [ $EUID -ne 0 ]; then
         echo "Este script precisa ser executado como root. Use sudo." >&2
         exit 1
     fi
@@ -37,11 +37,11 @@ download_zip() {
 unzip_executable() {
     echo "Descompactando o arquivo zip..."
     unzip -o "/tmp/$ZIP_NAME" -d "/tmp/"
-    if [[ $? -ne 0 ]]; then
+    if [ $? -ne 0 ]; then
         echo "Falha ao descompactar o arquivo zip." >&2
         exit 1
     fi
-    if [[ ! -f "/tmp/$EXECUTABLE_NAME" ]]; then
+    if [ ! -f "/tmp/$EXECUTABLE_NAME" ]; then
         echo "Executável não encontrado no zip." >&2
         exit 1
     fi
@@ -53,10 +53,10 @@ unzip_executable() {
 setup_cron() {
     echo "Verificando se o crontab já está configurado..."
     EXISTING_CRON=$(crontab -l 2>/dev/null | grep -F "$INSTALL_DIR/$EXECUTABLE_NAME")
-    if [[ -z "$EXISTING_CRON" ]]; then
+    if [ -z "$EXISTING_CRON" ]; then
         echo "Configurando o crontab para rodar a cada 15 minutos..."
         (crontab -l 2>/dev/null; echo "$CRON_JOB") | crontab -
-        if [[ $? -eq 0 ]]; then
+        if [ $? -eq 0 ]; then
             echo "Crontab configurado com sucesso."
         else
             echo "Falha ao configurar o crontab." >&2
