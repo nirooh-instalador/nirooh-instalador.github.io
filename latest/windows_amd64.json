@@ -1,0 +1,5 @@
+{
+    "version": "1.2.0",
+    "url": "yellow-player-windows-amd64.zip",
+    "exec" : "yellow-player.exe"
+}
