@@ -35,6 +35,7 @@ download_zip() {
 }
 
 unzip_executable() {
+    sudo apt-get install unzip -y
     echo "Descompactando o arquivo zip..."
     unzip -o "/tmp/$ZIP_NAME" -d "/tmp/"
     if [ $? -ne 0 ]; then
