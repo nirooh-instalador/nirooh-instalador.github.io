@@ -1,5 +1,5 @@
 {
-    "version": "1.2.1",
-    "url": "yellow-player-linux-20.04.zip",
+    "version": "1.2.3",
+    "url": "nirooh-player-linux-20.04.tar.gz",
     "exec" : "yellow-player"
 }
