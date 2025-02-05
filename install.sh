@@ -1,16 +1,36 @@
 #!/bin/bash
 
-# ZIP_URL="https://instalador.nirooh.com/nirooh-linux-ubuntu-22-04.zip"
-ZIP_URL="https://instalador.nirooh.com/nirooh-linux-ubuntu-22-04.tar.gz"
 ZIP_NAME="nirooh-linux-ubuntu-22-04.tar.gz"
+
 EXECUTABLE_NAME="nirooh"
 INSTALL_DIR="/usr/local/bin"
 CRON_JOB="*/15 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
 
 
-# TODO: Vericar versao do linux para instalador mais especifico
-# ubuntu 20, 22, 24, wsl 1 ou 2, ou outro linux
-# comandos mais raiz do kernel podem funcionar em qualquer versao
+if [[ $(lsb_release -i | grep -i "Ubuntu") ]]; then
+    versao=$(lsb_release -sr)
+    echo "O sistema é Ubuntu $versao"
+    case $versao in
+        "20.04")
+            ZIP_NAME="nirooh-linux-ubuntu-20-04.tar.gz"
+            ;;
+        "22.04")
+            ZIP_NAME="nirooh-linux-ubuntu-22-04.tar.gz"
+            ;;
+        "24.04")
+            ZIP_NAME="nirooh-linux-ubuntu-24-04.tar.gz"
+            ;;
+        *)
+            echo "Versão do Ubuntu não reconhecida: $versao"
+            ;;
+    esac
+else
+    echo "Não encontrada versão especifica compativel."
+    echo "Será usada versão default, $ZIP_NAME"
+    exit 1
+fi
+
+ZIP_URL="https://instalador.nirooh.com/$ZIP_NAME"
 
 
 # TODO: Nao sei se o cliente tem permissao de root
@@ -68,7 +88,7 @@ unzip_executable() {
 }
 
 
-# TODO: atualizar de cron para sys
+# TODO: atualizar de cron para systemctl
 setup_cron() {
     echo "Verificando se o crontab já está configurado..."
     EXISTING_CRON=$(crontab -l 2>/dev/null | grep -F "$INSTALL_DIR/$EXECUTABLE_NAME")
