@@ -1,38 +1,38 @@
 #!/bin/bash
 
 ZIP_NAME="nirooh-linux-ubuntu-22-04.tar.gz"
+URL_NIROOH="https://instalador.nirooh.com"
+ZIP_URL="$URL_NIROOH/$ZIP_NAME"
 
 EXECUTABLE_NAME="nirooh"
 INSTALL_DIR="/usr/local/bin"
 CRON_JOB="*/15 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
 
 
-if [ $(lsb_release -i | grep -i "Ubuntu") ]; then
-    versao=$(lsb_release -sr)
-    echo "O sistema é Ubuntu $versao"
-    case $versao in
-        "20.04")
-            ZIP_NAME="nirooh-linux-ubuntu-20-04.tar.gz"
-            ;;
-        "22.04")
-            ZIP_NAME="nirooh-linux-ubuntu-22-04.tar.gz"
-            ;;
-        "24.04")
-            ZIP_NAME="nirooh-linux-ubuntu-24-04.tar.gz"
-            ;;
-        *)
-            echo "Versão do Ubuntu não reconhecida: $versao"
-            ;;
-    esac
-else
-    echo "Não encontrada versão especifica compativel."
-    echo "Será usada versão default, $ZIP_NAME"
-    exit 1
-fi
-
-echo "Será usada versão default, $ZIP_NAME"
-
-ZIP_URL="https://instalador.nirooh.com/$ZIP_NAME"
+verificar_ubuntu() {
+    if [ $(lsb_release -i | grep -i "Ubuntu") ]; then
+        versao=$(lsb_release -sr)
+        case $versao in
+            "20.04")
+                ZIP_NAME="nirooh-linux-ubuntu-20-04.tar.gz"
+                ;;
+            "22.04")
+                ZIP_NAME="nirooh-linux-ubuntu-22-04.tar.gz"
+                ;;
+            "24.04")
+                ZIP_NAME="nirooh-linux-ubuntu-24-04.tar.gz"
+                ;;
+            *)
+                echo "Versão do Ubuntu não reconhecida: $versao"
+                echo "Será usada versão default, $ZIP_NAME"
+                ;;
+        esac
+        ZIP_URL="$URL_NIROOH/$ZIP_NAME"
+    else
+        echo "Não encontrada versão especifica compativel."
+        echo "Será usada versão default, $ZIP_NAME"
+    fi
+}
 
 
 # TODO: Nao sei se o cliente tem permissao de root
@@ -109,6 +109,7 @@ setup_cron() {
 }
 
 main() {
+    verificar_ubuntu
     check_root
     install_dependencies
     download_zip
@@ -119,3 +120,5 @@ main() {
 main
 
 "$INSTALL_DIR/$EXECUTABLE_NAME" &
+
+exit 1
