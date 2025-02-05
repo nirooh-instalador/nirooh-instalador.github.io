@@ -1,18 +1,31 @@
 #!/bin/bash
 
-ZIP_URL="https://instalador.nirooh.com/nirooh-linux-ubuntu-22-04.zip"
-ZIP_NAME="nirooh-linux-ubuntu-22-04.zip"
+# ZIP_URL="https://instalador.nirooh.com/nirooh-linux-ubuntu-22-04.zip"
+ZIP_URL="https://instalador.nirooh.com/nirooh-linux-ubuntu-22-04.tar.gz"
+ZIP_NAME="nirooh-linux-ubuntu-22-04.tar.gz"
 EXECUTABLE_NAME="nirooh"
 INSTALL_DIR="/usr/local/bin"
 CRON_JOB="*/15 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
 
+
+# TODO: Vericar versao do linux para instalador mais especifico
+# ubuntu 20, 22, 24, wsl 1 ou 2, ou outro linux
+# comandos mais raiz do kernel podem funcionar em qualquer versao
+
+
+# TODO: Nao sei se o cliente tem permissao de root
+# entao precisa instalar no usuario atual
 check_root() {
+    ## Pode usar o $USER -eq 
     if [ "$EUID" -ne "0" ]; then
         echo "Este script precisa ser executado como root. Use sudo." >&2
+        # Mas não precisa mais, por causa do targz
         exit 1
     fi
 }
 
+
+# TODO: Trocar dependencia zip, por tar.gz
 install_dependencies() {
     if ! command -v unzip &>/dev/null; then
         echo "Instalando a dependência 'unzip'..."
@@ -24,6 +37,7 @@ install_dependencies() {
     fi
 }
 
+# TODO: Atualizar o curl
 download_zip() {
     echo "Baixando o arquivo zip de $ZIP_URL..."
     curl -o "/tmp/$ZIP_NAME" "$ZIP_URL"
@@ -34,6 +48,8 @@ download_zip() {
     echo "Arquivo zip baixado em /tmp/$ZIP_NAME."
 }
 
+
+# TODO: Atualizar unzip com tar.gz
 unzip_executable() {
     sudo apt-get install unzip -y
     echo "Descompactando o arquivo zip..."
@@ -51,6 +67,8 @@ unzip_executable() {
     echo "Executável instalado em $INSTALL_DIR."
 }
 
+
+# TODO: atualizar de cron para sys
 setup_cron() {
     echo "Verificando se o crontab já está configurado..."
     EXISTING_CRON=$(crontab -l 2>/dev/null | grep -F "$INSTALL_DIR/$EXECUTABLE_NAME")
