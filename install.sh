@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SISTEMA="Ubuntu"
+VERSAO="22.04"
+
 ZIP_NAME="nirooh-linux-ubuntu-22-04.tar.gz"
 URL_NIROOH="https://instalador.nirooh.com"
 ZIP_URL="$URL_NIROOH/$ZIP_NAME"
@@ -9,29 +12,43 @@ INSTALL_DIR="/usr/local/bin"
 CRON_JOB="*/15 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
 
 
-verificar_ubuntu() {
-    if [ $(lsb_release -i | grep -i "Ubuntu") ]; then
-        versao=$(lsb_release -sr)
-        case $versao in
-            "20.04")
-                ZIP_NAME="nirooh-linux-ubuntu-20-04.tar.gz"
-                ;;
-            "22.04")
-                ZIP_NAME="nirooh-linux-ubuntu-22-04.tar.gz"
-                ;;
-            "24.04")
-                ZIP_NAME="nirooh-linux-ubuntu-24-04.tar.gz"
-                ;;
-            *)
-                echo "Versão do Ubuntu não reconhecida: $versao"
-                echo "Será usada versão default, $ZIP_NAME"
-                ;;
-        esac
-        ZIP_URL="$URL_NIROOH/$ZIP_NAME"
-    else
-        echo "Não encontrada versão especifica compativel."
-        echo "Será usada versão default, $ZIP_NAME"
+identificar_sistema() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        SISTEMA="$ID"
+        VERSAO="$VERSION_ID"
+
+    elif [ -f /etc/lsb-release ]; then
+        . /etc/lsb-release
+        SISTEMA="$DISTRIB_ID"
+        VERSAO="$DISTRIB_RELEASE"
+
+    elif [ -f /etc/debian_version ]; then
+        SISTEMA="debian"
+        VERSAO=$(cat /etc/debian_version)
+
+    elif [ -f /etc/redhat-release ]; then
+        # Red Hat, CentOS e derivados
+        SISTEMA=$(cat /etc/redhat-release | cut -d " " -f 1)
+        VERSAO=$(cat /etc/redhat-release | grep -oE '[0-9]+\.[0-9]+')
     fi
+
+    echo "Sistema detectado: $SISTEMA $VERSAO"
+}
+
+
+selecionar_zip() {
+    if [ "$SISTEMA" = "ubuntu" ]; then
+        if [ "$VERSAO" = "20.04" ]; then
+            ZIP_NAME="nirooh-linux-ubuntu-20-04.tar.gz"
+        elif [ "$VERSAO" = "22.04" ]; then
+            ZIP_NAME="nirooh-linux-ubuntu-22-04.tar.gz"
+        elif [ "$VERSAO" = "24.04" ]; then
+            ZIP_NAME="nirooh-linux-ubuntu-24-04.tar.gz"
+        fi
+    fi
+
+    ZIP_URL="$URL_NIROOH/$ZIP_NAME"
 }
 
 
@@ -109,7 +126,8 @@ setup_cron() {
 }
 
 main() {
-    verificar_ubuntu
+    identificar_sistema
+    selecionar_zip
     check_root
     install_dependencies
     download_zip
