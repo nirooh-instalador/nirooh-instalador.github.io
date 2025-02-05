@@ -7,7 +7,7 @@ INSTALL_DIR="/usr/local/bin"
 CRON_JOB="*/15 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
 
 
-if [[ $(lsb_release -i | grep -i "Ubuntu") ]]; then
+if [ $(lsb_release -i | grep -i "Ubuntu") ]; then
     versao=$(lsb_release -sr)
     echo "O sistema é Ubuntu $versao"
     case $versao in
@@ -29,6 +29,8 @@ else
     echo "Será usada versão default, $ZIP_NAME"
     exit 1
 fi
+
+echo "Será usada versão default, $ZIP_NAME"
 
 ZIP_URL="https://instalador.nirooh.com/$ZIP_NAME"
 
