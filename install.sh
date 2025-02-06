@@ -7,18 +7,34 @@ ZIP_NAME="nirooh-linux-ubuntu-24-04.tar.gz"
 URL_NIROOH="https://instalador.nirooh.com"
 ZIP_URL="$URL_NIROOH/$ZIP_NAME"
 
-
 EXECUTABLE_NAME="nirooh"
 INSTALL_DIR="$HOME/.local/bin"
-mkdir -p "$INSTALL_DIR/"
-if ! echo "$PATH" | grep -q "$HOME/.local/bin"; then
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.profile"
-    export PATH="$HOME/.local/bin:$PATH"
-fi
+
+
+atualizar_path() {
+    mkdir -p "$INSTALL_DIR/"
+
+    if ! grep -qx 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc"; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+    fi
+
+    if ! grep -qx 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.profile"; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.profile"
+    fi
+
+    # Adiciona ao PATH da sessão atual somente se ainda não estiver presente
+    case ":$PATH:" in
+        *":$HOME/.local/bin:"*) ;;
+        *) export PATH="$HOME/.local/bin:$PATH" ;;
+    esac
+
+    echo "PATH atualizado -> $PATH"
+}
 
 
 identificar_sistema() {
+    [ "$(uname -s)" = "Linux" ] || error 'This script is intended to run on Linux only.'
+
     if [ -f /etc/os-release ]; then
         . /etc/os-release
         SISTEMA="$ID"
@@ -55,6 +71,8 @@ selecionar_zip() {
     fi
 
     ZIP_URL="$URL_NIROOH/$ZIP_NAME"
+
+    echo "zip selecionado $ZIP_URL"
 }
 
 
@@ -98,9 +116,8 @@ extract_tar() {
     fi
     mv "/tmp/$EXECUTABLE_NAME" "$INSTALL_DIR/"
     chmod +x "$INSTALL_DIR/$EXECUTABLE_NAME"
-    echo "Executável instalado em $INSTALL_DIR."
+    echo "Executável instalado em $INSTALL_DIR/$EXECUTABLE_NAME."
 }
-
 
 
 setup_systemd() {
@@ -115,23 +132,27 @@ After=network.target
 [Service]
 ExecStart=$INSTALL_DIR/$EXECUTABLE_NAME
 Restart=always
-RestartSec=15
+RestartSec=5
 User=$USER
 
 [Install]
 WantedBy=default.target
 EOF
 
-    chmod 777 $SERVICE_FILE
+    chmod 644 $SERVICE_FILE
+    # com --user ou nao?
     systemctl --user daemon-reload
     systemctl --user enable nirooh.service
     systemctl --user start nirooh.service
-    systemctl --user restart nirooh.service
+
+    echo "Servico $SERVICE_FILE ativado"
+
+    systemctl --user status nirooh.service
 }
 
 
-
 main() {
+    atualizar_path
     identificar_sistema
     selecionar_zip
     enable_linger
