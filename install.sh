@@ -127,7 +127,7 @@ EOF
     systemctl --user enable nirooh.service
     systemctl --user start nirooh.service
     systemctl --user restart nirooh.service
-
+    systemctl --user reboot nirooh.service
 }
 
 
