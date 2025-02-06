@@ -9,8 +9,8 @@ ZIP_URL="$URL_NIROOH/$ZIP_NAME"
 
 
 EXECUTABLE_NAME="nirooh"
-INSTALL_DIR="$HOME/.local/bin/"
-mkdir -p "$INSTALL_DIR"
+INSTALL_DIR="$HOME/.local/bin"
+mkdir -p "$INSTALL_DIR/"
 if ! echo "$PATH" | grep -q "$HOME/.local/bin"; then
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.profile"
@@ -121,7 +121,7 @@ User=$USER
 [Install]
 WantedBy=default.target
 EOF
-
+    chmod +x $SERVICE_FILE
     systemctl --user daemon-reload
     systemctl --user enable nirooh.service
     systemctl --user start nirooh.service
