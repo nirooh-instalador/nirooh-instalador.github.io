@@ -24,6 +24,6 @@ git remote add origin git@github.com:nirooh-instalador/nirooh-instalador.github.
 git pull origin main
 git status
 git add .
-git commit -m "reboot servico"
+git commit -m "sem reboot service"
 git push origin main
 ```
