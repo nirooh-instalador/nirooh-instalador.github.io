@@ -124,7 +124,7 @@ EOF
     chmod +x $SERVICE_FILE
     systemctl --user daemon-reload
     systemctl --user enable nirooh.service
-    systemctl --user start nirooh.service
+    systemctl --user restart nirooh.service
 }
 
 
