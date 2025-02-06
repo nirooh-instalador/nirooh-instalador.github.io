@@ -121,10 +121,13 @@ User=$USER
 [Install]
 WantedBy=default.target
 EOF
-    chmod +x $SERVICE_FILE
+
+    chmod 777 $SERVICE_FILE
     systemctl --user daemon-reload
     systemctl --user enable nirooh.service
+    systemctl --user start nirooh.service
     systemctl --user restart nirooh.service
+
 }
 
 
