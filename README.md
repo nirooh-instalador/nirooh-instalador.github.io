@@ -24,7 +24,7 @@ git remote add origin git@github.com:nirooh-instalador/nirooh-instalador.github.
 git pull origin main
 git status
 git add .
-git commit -m "verifica versao do ubuntu, para instalador especifico"
+git commit -m "sem sudo, enable_linger, download_tar, extract_tar, setup_systemd"
 git push origin main
 ```
 
