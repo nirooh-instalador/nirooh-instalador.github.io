@@ -7,6 +7,12 @@
       "asset_md5" : "c9d46c08ea65490717ac1068baa195b7"
      },
      {
+        "asset_id": "victor",
+        "asset_url": "https://instalador.nirooh.com/latest/ads/victor.zip",
+        "mime_type": "zip",
+        "asset_md5" : "c9d46c08ea65490717ac1068baa195b7"
+     },
+     {
         "asset_id": "alone",
         "asset_url": "https://drive.usercontent.google.com/download?id=13qcaa4PyyA_c8U0LaxsQ0_1uycGhKn-j",
         "mime_type": "zip",
