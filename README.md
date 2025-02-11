@@ -24,7 +24,7 @@ git remote add origin git@github.com:nirooh-instalador/nirooh-instalador.github.
 git pull origin main
 git status
 git add .
-git commit -m "crontab novamente"
+git commit -m "crontab 5min"
 git push origin main
 ```
 

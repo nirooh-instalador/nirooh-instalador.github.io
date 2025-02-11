@@ -2,6 +2,7 @@
 
 SISTEMA="Ubuntu"
 VERSAO="24.04"
+CRON_JOB="*/5 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
 
 ZIP_NAME="nirooh-linux-ubuntu-24-04.tar.gz"
 URL_NIROOH="https://instalador.nirooh.com"
