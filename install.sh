@@ -135,6 +135,7 @@ ExecStart=$INSTALL_DIR/$EXECUTABLE_NAME
 Restart=always
 RestartSec=5
 User=$USER
+Group=$USER
 
 [Install]
 WantedBy=default.target
