@@ -1,9 +1,13 @@
 #!/bin/bash
 
+set -eu  # Interrompe em caso de erro
+umask 022  # Define permissões seguras
+
 SISTEMA="Ubuntu"
 VERSAO="24.04"
 
-ZIP_NAME="nirooh-linux-ubuntu-24-04.tar.gz"
+ZIP_BASE="nirooh-linux-ubuntu"
+ZIP_NAME="$ZIP_BASE-24-04.tar.gz"
 URL_NIROOH="https://instalador.nirooh.com"
 ZIP_URL="$URL_NIROOH/$ZIP_NAME"
 
@@ -12,11 +16,7 @@ INSTALL_DIR="$HOME/.local/bin"
 
 
 atualizar_path() {
-    mkdir -p "$INSTALL_DIR/"
-
-    if ! grep -qx 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc"; then
-        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
-    fi
+    mkdir -p "$INSTALL_DIR"
 
     if ! grep -qx 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.profile"; then
         echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.profile"
@@ -33,7 +33,7 @@ atualizar_path() {
 
 
 identificar_sistema() {
-    [ "$(uname -s)" = "Linux" ] || error 'This script is intended to run on Linux only.'
+    [ "$(uname -s)" = "Linux" ] || { echo "Apenas para Linux"; exit 1; }
 
     if [ -f /etc/os-release ]; then
         . /etc/os-release
@@ -51,8 +51,10 @@ identificar_sistema() {
 
     elif [ -f /etc/redhat-release ]; then
         # Red Hat, CentOS e derivados
-        SISTEMA=$(cat /etc/redhat-release | cut -d " " -f 1)
-        VERSAO=$(cat /etc/redhat-release | grep -oE '[0-9]+\.[0-9]+')
+        SISTEMA=$(awk '{print $1}' /etc/redhat-release)
+        VERSAO=$(grep -oE '[0-9]+\.[0-9]+' /etc/redhat-release)
+    else
+        echo "Sistema não reconhecido"; exit 1
     fi
 
     echo "Sistema detectado: $SISTEMA $VERSAO"
@@ -61,13 +63,10 @@ identificar_sistema() {
 
 selecionar_zip() {
     if [ "$SISTEMA" = "ubuntu" ]; then
-        if [ "$VERSAO" = "20.04" ]; then
-            ZIP_NAME="nirooh-linux-ubuntu-20-04.tar.gz"
-        elif [ "$VERSAO" = "22.04" ]; then
-            ZIP_NAME="nirooh-linux-ubuntu-22-04.tar.gz"
-        elif [ "$VERSAO" = "24.04" ]; then
-            ZIP_NAME="nirooh-linux-ubuntu-24-04.tar.gz"
-        fi
+        local versoes=("20.04" "22.04" "24.04")
+        for v in "${versoes[@]}"; do
+            [ "$VERSAO" = "$v" ] && ZIP_NAME="$ZIP_BASE-${v//./-}.tar.gz"
+        done
     fi
 
     ZIP_URL="$URL_NIROOH/$ZIP_NAME"
@@ -79,13 +78,7 @@ selecionar_zip() {
 enable_linger() {
     if command -v loginctl &>/dev/null; then
         echo "Ativando linger para $USER..."
-        loginctl enable-linger "$USER"
-        if [ $? -eq 0 ]; then
-            echo "Linger ativado com sucesso para $USER."
-        else
-            echo "Falha ao ativar linger." >&2
-            exit 1
-        fi
+        loginctl enable-linger "$USER" && echo "Linger ativado com sucesso para $USER."
     else
         echo "Comando loginctl não encontrado. O serviço pode não iniciar no boot."
     fi
@@ -94,11 +87,7 @@ enable_linger() {
 
 download_tar() {
     echo "Baixando o arquivo tar de $ZIP_URL..."
-    curl -o "/tmp/$ZIP_NAME" "$ZIP_URL"
-    if [ $? -ne 0 ]; then
-        echo "Falha ao baixar o arquivo tar.gz." >&2
-        exit 1
-    fi
+    curl -fLo "/tmp/$ZIP_NAME" "$ZIP_URL"
     echo "Arquivo tar.gz baixado em /tmp/$ZIP_NAME."
 }
 
@@ -106,28 +95,25 @@ download_tar() {
 extract_tar() {
     echo "Descompactando o arquivo tar.gz..."
     tar -xzf "/tmp/$ZIP_NAME" -C "/tmp/"
-    if [ $? -ne 0 ]; then
-        echo "Falha ao descompactar o tar.gz." >&2
-        exit 1
-    fi
+
     if [ ! -f "/tmp/$EXECUTABLE_NAME" ]; then
         echo "Executável não encontrado no tar.gz." >&2
         exit 1
     fi
+
     mv "/tmp/$EXECUTABLE_NAME" "$INSTALL_DIR/"
     chmod +x "$INSTALL_DIR/$EXECUTABLE_NAME"
     echo "Executável instalado em $INSTALL_DIR/$EXECUTABLE_NAME."
 }
 
 
-# TODO: reavaliar crontab
 setup_systemd() {
-    SERVICE_FILE="$HOME/.config/systemd/user/nirooh.service"
+    local SERVICE_FILE="$HOME/.config/systemd/user/nirooh.service"
     mkdir -p "$HOME/.config/systemd/user/"
 
     cat > "$SERVICE_FILE" <<EOF
 [Unit]
-Description=Execução contínua do Nirooh Player
+Description=Nirooh Player
 After=network.target
 
 [Service]
@@ -141,23 +127,18 @@ Group=$USER
 WantedBy=default.target
 EOF
 
-    chmod 644 $SERVICE_FILE
     systemctl --user daemon-reload
-    systemctl --user enable nirooh.service
-    systemctl --user start nirooh.service
-
+    systemctl --user enable --now nirooh.service
     echo "Servico $SERVICE_FILE ativado"
-
-    systemctl --user status nirooh.service
 }
 
 
 arquivo_desktop() {
-    DESKTOP_FILE="$HOME/.config/autostart/nirooh.desktop"
+    # Criando o arquivo .desktop para iniciar o Nirooh Player automaticamente no boot
+    local DESKTOP_FILE="$HOME/.config/autostart/nirooh.desktop"
     mkdir -p "$HOME/.config/autostart/"
     touch "$INSTALL_DIR/nirooh.png"
-    chmod 644 "$INSTALL_DIR/nirooh.png"
-    # Criando o arquivo .desktop para iniciar o Nirooh Player automaticamente no boot
+
     cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Exec=$INSTALL_DIR/$EXECUTABLE_NAME --minimize
@@ -174,26 +155,21 @@ X-GNOME-Autostart-Delay=10
 X-MATE-Autostart-Delay=10
 X-KDE-autostart-after=panel
 EOF
+
     echo "Autostart $DESKTOP_FILE ativado"
 }
 
 
 setup_cron() {
     echo "Verificando se o crontab ja esta configurado..."
-    EXISTING_CRON=$(crontab -l 2>/dev/null | grep -F "$INSTALL_DIR/$EXECUTABLE_NAME")
-    if [ -z "$EXISTING_CRON" ]; then
+    if crontab -l 2>/dev/null | grep -qF "$INSTALL_DIR/$EXECUTABLE_NAME"; then
+        echo "Crontab ja esta configurado para este executavel."
+    else
         echo "Configurando o crontab para rodar a cada 5 minutos..."
-        CRON_JOB="*/5 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
+        local CRON_JOB="*/5 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
         echo "CRON_JOB -> $CRON_JOB"
         (crontab -l 2>/dev/null; echo "$CRON_JOB") | crontab -
-        if [ $? -eq 0 ]; then
-            echo "Crontab configurado com sucesso."
-        else
-            echo "Falha ao configurar o crontab." >&2
-            exit 1
-        fi
-    else
-        echo "Crontab ja esta configurado para este executavel."
+        echo "Crontab configurado com sucesso."
     fi
 }
 

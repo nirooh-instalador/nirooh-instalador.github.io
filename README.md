@@ -24,7 +24,7 @@ git remote add origin git@github.com:nirooh-instalador/nirooh-instalador.github.
 git pull origin main
 git status
 git add .
-git commit -m "atualziar CRON_JOB"
+git commit -m "set eu, umask, zip_base, loop versao, enable now service, limpeza codigo"
 git push origin main
 ```
 
