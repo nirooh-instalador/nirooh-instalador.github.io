@@ -2,7 +2,6 @@
 
 SISTEMA="Ubuntu"
 VERSAO="24.04"
-CRON_JOB="*/5 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
 
 ZIP_NAME="nirooh-linux-ubuntu-24-04.tar.gz"
 URL_NIROOH="https://instalador.nirooh.com"
@@ -157,6 +156,8 @@ arquivo_desktop() {
     DESKTOP_FILE="$HOME/.config/autostart/nirooh.desktop"
     mkdir -p "$HOME/.config/autostart/"
     touch "$INSTALL_DIR/nirooh.png"
+    chmod 644 "$INSTALL_DIR/nirooh.png"
+    # Criando o arquivo .desktop para iniciar o Nirooh Player automaticamente no boot
     cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Exec=$INSTALL_DIR/$EXECUTABLE_NAME --minimize
@@ -182,6 +183,8 @@ setup_cron() {
     EXISTING_CRON=$(crontab -l 2>/dev/null | grep -F "$INSTALL_DIR/$EXECUTABLE_NAME")
     if [ -z "$EXISTING_CRON" ]; then
         echo "Configurando o crontab para rodar a cada 5 minutos..."
+        CRON_JOB="*/5 * * * * $INSTALL_DIR/$EXECUTABLE_NAME"
+        echo "CRON_JOB -> $CRON_JOB"
         (crontab -l 2>/dev/null; echo "$CRON_JOB") | crontab -
         if [ $? -eq 0 ]; then
             echo "Crontab configurado com sucesso."
