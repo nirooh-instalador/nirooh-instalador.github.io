@@ -120,6 +120,7 @@ extract_tar() {
 }
 
 
+# TODO: reavaliar crontab
 setup_systemd() {
     SERVICE_FILE="$HOME/.config/systemd/user/nirooh.service"
     mkdir -p "$HOME/.config/systemd/user/"
@@ -140,7 +141,6 @@ WantedBy=default.target
 EOF
 
     chmod 644 $SERVICE_FILE
-    # com --user ou nao?
     systemctl --user daemon-reload
     systemctl --user enable nirooh.service
     systemctl --user start nirooh.service
@@ -148,6 +148,29 @@ EOF
     echo "Servico $SERVICE_FILE ativado"
 
     systemctl --user status nirooh.service
+}
+
+
+arquivo_desktop() {
+    DESKTOP_FILE="$HOME/.config/autostart/nirooh.desktop"
+    mkdir -p "$HOME/.config/autostart/"
+
+    cat > "$DESKTOP_FILE" <<EOF
+[Desktop Entry]
+Exec=$INSTALL_DIR/$EXECUTABLE_NAME --minimize
+Version=1.0
+Type=Application
+Categories=Player
+Name=Nirooh Player
+StartupWMClass=nirooh
+Terminal=false
+X-GNOME-Autostart-enabled=true
+StartupNotify=false
+X-GNOME-Autostart-Delay=10
+X-MATE-Autostart-Delay=10
+X-KDE-autostart-after=panel
+EOF
+    echo "Autostart $DESKTOP_FILE ativado"
 }
 
 
@@ -159,6 +182,7 @@ main() {
     download_tar
     extract_tar
     setup_systemd
+    arquivo_desktop
 }
 
 

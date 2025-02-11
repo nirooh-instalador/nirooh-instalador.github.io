@@ -24,6 +24,6 @@ git remote add origin git@github.com:nirooh-instalador/nirooh-instalador.github.
 git pull origin main
 git status
 git add .
-git commit -m "atualizar_path, "
+git commit -m "atualizar_path"
 git push origin main
 ```
