@@ -24,6 +24,11 @@ git remote add origin git@github.com:nirooh-instalador/nirooh-instalador.github.
 git pull origin main
 git status
 git add .
-git commit -m ""
+git commit -m "crontab novamente"
 git push origin main
 ```
+
+
+# 3. Teste:
+- http://localhost:1920/
+- http://localhost:1920/media/all/inviron/
