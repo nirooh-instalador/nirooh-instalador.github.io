@@ -156,10 +156,11 @@ EOF
 arquivo_desktop() {
     DESKTOP_FILE="$HOME/.config/autostart/nirooh.desktop"
     mkdir -p "$HOME/.config/autostart/"
-
+    touch "$INSTALL_DIR/nirooh.png"
     cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Exec=$INSTALL_DIR/$EXECUTABLE_NAME --minimize
+Icon=$INSTALL_DIR/nirooh.png
 Version=1.0
 Type=Application
 Categories=Player
@@ -180,7 +181,7 @@ setup_cron() {
     echo "Verificando se o crontab ja esta configurado..."
     EXISTING_CRON=$(crontab -l 2>/dev/null | grep -F "$INSTALL_DIR/$EXECUTABLE_NAME")
     if [ -z "$EXISTING_CRON" ]; then
-        echo "Configurando o crontab para rodar a cada 15 minutos..."
+        echo "Configurando o crontab para rodar a cada 5 minutos..."
         (crontab -l 2>/dev/null; echo "$CRON_JOB") | crontab -
         if [ $? -eq 0 ]; then
             echo "Crontab configurado com sucesso."
