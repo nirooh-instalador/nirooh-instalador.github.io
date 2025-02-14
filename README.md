@@ -24,7 +24,7 @@ git remote add origin git@github.com:nirooh-instalador/nirooh-instalador.github.
 git pull origin main
 git status
 git add .
-git commit -m "template de novo"
+git commit -m ""
 git push origin main
 ```
 

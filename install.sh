@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -eu  # Interrompe em caso de erro
-umask 022  # Define permissões seguras
+umask 022  # Define permissoes seguras
 
 SISTEMA="Ubuntu"
 VERSAO="24.04"
@@ -63,9 +63,11 @@ identificar_sistema() {
 
 selecionar_zip() {
     if [ "$SISTEMA" = "ubuntu" ]; then
-        local versoes=("20.04" "22.04" "24.04")
+        local versoes = ( "20.04" "22.04" "24.04" )
         for v in "${versoes[@]}"; do
-            [ "$VERSAO" = "$v" ] && ZIP_NAME="$ZIP_BASE-${v//./-}.tar.gz"
+            if [ "$VERSAO" = "$v" ]; then
+                ZIP_NAME="$ZIP_BASE-${v//./-}.tar.gz"
+            fi
         done
     fi
 
