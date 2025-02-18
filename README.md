@@ -1,7 +1,7 @@
 # 1. Como instalar Instalar:
 - Executar comando abaixo no shell(prompt de comando) do linux
 ```
-curl -o -fsSL https://instalador.nirooh.com/install.sh | sh
+curl -fsSL https://instalador.nirooh.com/install.sh | sh
 ```
 
 
@@ -24,7 +24,7 @@ git remote add origin git@github.com:nirooh-instalador/nirooh-instalador.github.
 git pull origin main
 git status
 git add .
-git commit -m "correcao shellcheck SC2016 no if"
+git commit -m "espacos em versoes"
 git push origin main
 ```
 
