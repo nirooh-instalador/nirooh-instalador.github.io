@@ -24,7 +24,7 @@ git remote add origin git@github.com:nirooh-instalador/nirooh-instalador.github.
 git pull origin main
 git status
 git add .
-git commit -m "versoes sem espaco no igual da atribuicao"
+git commit -m "lista de versoes com parenteses"
 git push origin main
 ```
 
