@@ -63,12 +63,13 @@ identificar_sistema() {
 
 selecionar_zip() {
     if [ "$SISTEMA" = "ubuntu" ]; then
-        local versoes=( "20.04" "22.04" "24.04" )
-        for v in "${versoes[@]}"; do
-            if [ "$VERSAO" = "$v" ]; then
-                ZIP_NAME="$ZIP_BASE-${v//./-}.tar.gz"
-            fi
-        done
+        if [ "$VERSAO" = "20.04" ]; then
+            ZIP_NAME="$ZIP_BASE-20-04.tar.gz"
+        elif [ "$VERSAO" = "22.04" ]; then
+            ZIP_NAME="$ZIP_BASE-22-04.tar.gz"
+        elif [ "$VERSAO" = "24.04" ]; then
+            ZIP_NAME="$ZIP_BASE-24-04.tar.gz"
+        fi
     fi
 
     ZIP_URL="$URL_NIROOH/$ZIP_NAME"

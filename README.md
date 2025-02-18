@@ -24,7 +24,7 @@ git remote add origin git@github.com:nirooh-instalador/nirooh-instalador.github.
 git pull origin main
 git status
 git add .
-git commit -m "espacos em versoes"
+git commit -m "revogado loop for por ifs encadeados"
 git push origin main
 ```
 
