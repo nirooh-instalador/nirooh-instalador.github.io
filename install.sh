@@ -18,8 +18,8 @@ INSTALL_DIR="$HOME/.local/bin"
 atualizar_path() {
     mkdir -p "$INSTALL_DIR"
 
-    if ! grep -qx 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.profile"; then
-        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.profile"
+    if ! grep -qx "export PATH=\"\$HOME/.local/bin:\$PATH\"" "$HOME/.profile"; then
+        echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> "$HOME/.profile"
     fi
 
     # Adiciona ao PATH da sessão atual somente se ainda não estiver presente
