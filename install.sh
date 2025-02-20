@@ -63,8 +63,8 @@ identificar_sistema() {
 
 selecionar_zip() {
     if [ "$SISTEMA" = "ubuntu" ]; then
-        if [ "$VERSAO" = "20.04" ]; then
-            ZIP_NAME="$ZIP_BASE-20-04.tar.gz"
+        if [ "$VERSAO" = "16.04" ]; then
+            ZIP_NAME="$ZIP_BASE-16-04.tar.gz"
         elif [ "$VERSAO" = "22.04" ]; then
             ZIP_NAME="$ZIP_BASE-22-04.tar.gz"
         elif [ "$VERSAO" = "24.04" ]; then
