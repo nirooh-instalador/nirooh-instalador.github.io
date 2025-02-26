@@ -4,6 +4,6 @@
 curl -fsSL https://instalador.nirooh.com/install.sh | sh
 ```
 
-# 1. Como instalar Instalar no Windows:
+# 2. Como instalar Instalar no Windows:
 
  ---  em breve  ---
