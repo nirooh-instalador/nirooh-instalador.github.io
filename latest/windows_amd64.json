@@ -1,5 +1,5 @@
 {
-    "version": "1.2.30",
+    "version": "1.0.31",
     "url": "yellow-player-windows-amd64.zip",
     "exec" : "yellow-player.exe"
 }
