@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistemas Operacionais</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 40px;
+      background-color: #f0f0f0;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      width: 250px;
+      height: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .box:hover {
+      transform: scale(1.05);
+    }
+
+    .linux {
+      background-color: #333;
+    }
+
+    .windows {
+      background-color: #0078D6;
+    }
+  </style>
+</head>
+<body>
+  <h1>Escolha seu Sistema Operacional</h1>
+  <div class="container">
+    <a href="linux.html" class="box linux">Linux</a>
+    <a href="windows.html" class="box windows">Windows</a>
+  </div>
+</body>
+</html>
