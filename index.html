@@ -1,11 +1,708 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="5; URL='https://www.nirooh.com'">
-    <title>Redirecionando...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirooh - Instalador</title>
+    <link rel="icon" type="image/x-icon" href="https://cms.nirooh.com/static/v2/images/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'nirooh-primary': '#fa9500',
+                        'nirooh-green': '#10b981',
+                        'nirooh-dark': '#1e293b',
+                        'nirooh-light': '#f8fafc'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #fa9500 0%, #10b981 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
-<body>
-    <p>Você será redirecionado em 5 segundos. Caso não seja, <a href="https://www.nirooh.com">clique aqui</a>.</p>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <a class="flex items-center" href="https://nirooh.com" target="_self">
+                    <img src="https://cms.nirooh.com/static/v2/images/logo-dark.png" alt="logo" class="flex h-10 w-auto">
+                    <span class="ml-2 text-sm bg-nirooh-primary text-white px-2 py-1 rounded-full">Instalador</span>
+                </a>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-600 hover:text-nirooh-primary transition-colors">Início</a>
+                    <a href="#linux" class="text-gray-600 hover:text-nirooh-primary transition-colors">Linux</a>
+                    <a href="#windows" class="text-gray-600 hover:text-nirooh-primary transition-colors">Windows</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Home Section -->
+        <section id="home" class="text-center mb-16 fade-in">
+            <h2 class="text-4xl md:text-6xl font-bold text-nirooh-dark mb-6">
+                Escolha seu Sistema Operacional
+            </h2>
+            <p class="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
+                O Nirooh oferece soluções completas para monitoramento e gerenciamento, 
+                adaptadas para funcionar perfeitamente em diferentes sistemas operacionais.
+            </p>
+            
+            <!-- OS Selection Cards -->
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Linux Card -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg card-hover cursor-pointer" onclick="showSection('linux')">
+                    <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                        <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00.04.14c.139.312.29.618.462.919.404.706.857 1.18 1.339 1.484.394.25.803.189 1.218.189.533-.001 1.218-.062 2.062-.062 1.072 0 1.755.062 2.062.062.415 0 .824.061 1.218-.189.482-.304.935-.778 1.339-1.484.172-.301.323-.607.462-.919a.424.424 0 00.04-.14c.123-.805-.009-1.657-.287-2.489-.589-1.771-1.831-3.47-2.716-4.521-.75-1.067-.974-1.928-1.05-3.02-.065-1.491 1.056-5.965-3.17-6.298-.165-.013-.325-.021-.48-.021z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-nirooh-dark mb-4">Linux</h3>
+                    <p class="text-gray-600 mb-6">
+                        Compatível com Ubuntu, Debian e principais distribuições. 
+                        Otimizado para desempenho e estabilidade.
+                    </p>
+                    <div class="bg-green-50 text-green-700 px-4 py-2 rounded-lg inline-block">
+                        Clique para ver opções
+                    </div>
+                </div>
+
+                <!-- Windows Card -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg card-hover cursor-pointer" onclick="showSection('windows')">
+                    <div class="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                        <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.351"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-nirooh-dark mb-4">Windows</h3>
+                    <p class="text-gray-600 mb-6">
+                        Suporte completo para Windows 10 e Windows 11 64-bit. 
+                        Instalação simples.
+                    </p>
+                    <div class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg inline-block">
+                        Clique para ver opções
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Linux Section -->
+        <section id="linux" class="hidden fade-in">
+            <div class="text-center mb-12">
+                <button onclick="showSection('home')" class="inline-flex items-center text-nirooh-primary hover:text-nirooh-dark transition-colors mb-6">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 20 20">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    Voltar
+                </button>
+                <h2 class="text-4xl font-bold text-nirooh-dark mb-4">Nirooh para Linux</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    O Nirooh para Linux oferece todas as funcionalidades da versão Windows, 
+                    adaptadas para funcionar perfeitamente em sistemas operacionais baseados em Linux.
+                </p>
+            </div>
+
+            <!-- Linux Versions Table -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-12">
+                <div class="bg-gradient-to-r from-green-500 to-green-600 px-6 py-4">
+                    <h3 class="text-xl font-bold text-white">Versões Disponíveis</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Distribuição</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CMS</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Versão</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Arquitetura</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Download</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Ubuntu/Debian</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Inviron / EdgeContents</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16.04</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">64-bit</td>
+                                <td class="px-6 py-4 whitespace-nowrap">    
+                                    <a class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors" href="/versions/nirooh-player-ubuntu-16.04.tar.gz" target="_blank">
+                                        Download
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Ubuntu/Debian</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Inviron / EdgeContents</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">22.04</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">64-bit</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <a class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors" href="/versions/nirooh-player-ubuntu-22.04.tar.gz" target="_blank">
+                                        Download
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Ubuntu/Debian</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Inviron / EdgeContents</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">24.04</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">64-bit</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <a class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors" href="/versions/nirooh-player-ubuntu-24.04.tar.gz" target="_blank">
+                                        Download
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Other CMS Section -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 mb-12">
+                <h3 class="text-2xl font-bold text-nirooh-dark mb-6">Outros CMS</h3>
+                <p class="text-gray-600 mb-6">
+                    Nossa versão Linux é otimizada para desempenho e compatibilidade com as principais distribuições do mercado.
+                </p>
+                <p class="text-gray-600 mb-4">Executar comando abaixo no shell (prompt de comando) do linux:</p>
+                <div class="bg-gray-900 rounded-lg p-4 mb-4">
+                    <code class="text-green-400 font-mono text-sm" id="linux-command">curl -fsSL https://instalador.nirooh.com/install.sh | sh</code>
+                </div>
+                <button onclick="copyToClipboard('linux-command')" class="bg-nirooh-primary hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition-colors">
+                    Copiar Comando
+                </button>
+            </div>
+
+            <!-- Linux Requirements -->
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-nirooh-dark mb-6">Requisitos do Sistema</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Sistema operacional Linux 64-bit</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">2GB de RAM (mínimo)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">100MB de espaço em disco</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Conectividade com a internet</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Windows Section -->
+        <section id="windows" class="hidden fade-in">
+            <div class="text-center mb-12">
+                <button onclick="showSection('home')" class="inline-flex items-center text-nirooh-primary hover:text-nirooh-dark transition-colors mb-6">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    Voltar
+                </button>
+                <h2 class="text-4xl font-bold text-nirooh-dark mb-4">Nirooh para Windows</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Para instalar, basta baixar o instalador, descompactar e executar as instruções de instalação. 
+                    O Nirooh é compatível com sistemas de 64 bits.
+                </p>
+            </div>
+
+            <!-- Windows Versions Table -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-12">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+                    <h3 class="text-xl font-bold text-white">Versões Disponíveis</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Distribuição</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CMS</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Download</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Instruções</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Windows 10 / 11</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Inviron / EdgeContents</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <a class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors" href="/nirooh-windows-installer.zip" target="_blank">
+                                        Download
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">Adicionar o executável no diretório que o edgeContents está instalado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Windows Download Section -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 mb-12">
+                <h3 class="text-2xl font-bold text-nirooh-dark mb-6">Outros CMS</h3>
+                <div class="text-center">
+                    <div class="w-32 h-32 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.351"/>
+                        </svg>
+                    </div>
+                    <a class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors" href="/nirooh-windows-installer.zip" target="_blank">
+                        Baixe o instalador
+                    </a>
+                    <p class="text-gray-600 mt-6">
+                        Ou se preferir, baixe o pacote correspondente à sua distribuição e siga as instruções de instalação do CMS.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Windows Requirements -->
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-nirooh-dark mb-6">Requisitos do Sistema</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                            <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Sistema operacional Windows 10 e 11 de 64-bit</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                            <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">2GB de RAM (mínimo)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                            <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">500MB de espaço em disco</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                            <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Conectividade com a internet</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-nirooh-dark text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-4">Nirooh</h3>
+                <p class="text-gray-300 mb-6">
+                    Soluções completas para monitoramento e gerenciamento de sistemas
+                </p>
+                <div class="flex justify-center space-x-6">
+                    <a href="https://docs.nirooh.com/" target="_blank" class="text-gray-300 hover:text-white transition-colors">Documentação</a>
+                    <a href="https://wa.me/551151940707?text=Ol%C3%A1%2C+tudo+bom%3F+Estou+com+um+problema+para+instalar+o+servi%C3%A7o%2C+pode+me+ajudar%3F" target="_blank" class="text-gray-300 hover:text-white transition-colors">Suporte</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        class NiroohInstaller {
+            constructor() {
+                this.currentSection = 'home';
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.setupSmoothScrolling();
+                this.setupAnimations();
+            }
+
+            setupEventListeners() {
+                // Navigation links
+                document.querySelectorAll('a[href^="#"]').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const target = link.getAttribute('href').substring(1);
+                        this.showSection(target);
+                    });
+                });
+
+                // Mobile menu toggle (if needed)
+                this.setupMobileMenu();
+            }
+
+            setupMobileMenu() {
+                const mobileMenuButton = document.querySelector('[data-mobile-menu]');
+                const mobileMenu = document.querySelector('[data-mobile-menu-content]');
+                
+                if (mobileMenuButton && mobileMenu) {
+                    mobileMenuButton.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            }
+
+            showSection(sectionId) {
+                // Hide all sections
+                const sections = document.querySelectorAll('main > section');
+                sections.forEach(section => {
+                    section.classList.add('hidden');
+                    section.classList.remove('fade-in');
+                });
+
+                // Show target section
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.classList.remove('hidden');
+                    
+                    // Add fade-in animation with delay
+                    setTimeout(() => {
+                        targetSection.classList.add('fade-in');
+                    }, 50);
+                }
+
+                this.currentSection = sectionId;
+                this.updateURL(sectionId);
+            }
+
+            updateURL(sectionId) {
+                // Update URL without page reload
+                if (history.pushState) {
+                    const newUrl = sectionId === 'home' ? 
+                        window.location.pathname : 
+                        `${window.location.pathname}#${sectionId}`;
+                    history.pushState(null, null, newUrl);
+                }
+            }
+
+            setupSmoothScrolling() {
+                // Smooth scrolling for anchor links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                });
+            }
+
+            setupAnimations() {
+                // Intersection Observer for scroll animations
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate-fade-in');
+                        }
+                    });
+                }, observerOptions);
+
+                // Observe elements for animation
+                document.querySelectorAll('.card-hover, .bg-white').forEach(el => {
+                    observer.observe(el);
+                });
+            }
+
+            // Copy to clipboard functionality
+            copyToClipboard(elementId) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    const text = element.textContent || element.innerText;
+                    
+                    // Modern clipboard API
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(text).then(() => {
+                            this.showNotification('Comando copiado para a área de transferência!', 'success');
+                        }).catch(err => {
+                            console.error('Erro ao copiar: ', err);
+                            this.fallbackCopyTextToClipboard(text);
+                        });
+                    } else {
+                        // Fallback for older browsers
+                        this.fallbackCopyTextToClipboard(text);
+                    }
+                }
+            }
+
+            fallbackCopyTextToClipboard(text) {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.top = '0';
+                textArea.style.left = '0';
+                textArea.style.position = 'fixed';
+                
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        this.showNotification('Comando copiado para a área de transferência!', 'success');
+                    } else {
+                        this.showNotification('Erro ao copiar comando', 'error');
+                    }
+                } catch (err) {
+                    console.error('Fallback: Erro ao copiar', err);
+                    this.showNotification('Erro ao copiar comando', 'error');
+                }
+                
+                document.body.removeChild(textArea);
+            }
+
+            showNotification(message, type = 'info') {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full`;
+                
+                // Set notification style based on type
+                const styles = {
+                    success: 'bg-green-500 text-white',
+                    error: 'bg-red-500 text-white',
+                    info: 'bg-blue-500 text-white'
+                };
+                
+                notification.className += ` ${styles[type] || styles.info}`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-full');
+                }, 100);
+                
+                // Animate out and remove
+                setTimeout(() => {
+                    notification.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+
+            // Download functionality
+            handleDownload(platform, version = null) {
+                const downloads = {
+                    linux: {
+                        '16.04': 'https://instalador.nirooh.com/downloads/nirooh-linux-16.04.tar.gz',
+                        '22.04': 'https://instalador.nirooh.com/downloads/nirooh-linux-22.04.tar.gz',
+                        '24.04': 'https://instalador.nirooh.com/downloads/nirooh-linux-24.04.tar.gz'
+                    },
+                    windows: {
+                        default: 'https://instalador.nirooh.com/downloads/nirooh-windows.exe'
+                    }
+                };
+
+                let downloadUrl;
+                if (platform === 'linux' && version) {
+                    downloadUrl = downloads.linux[version];
+                } else if (platform === 'windows') {
+                    downloadUrl = downloads.windows.default;
+                }
+
+                if (downloadUrl) {
+                    // Create temporary link and trigger download
+                    const link = document.createElement('a');
+                    link.href = downloadUrl;
+                    link.download = '';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    this.showNotification(`Download iniciado para ${platform}${version ? ` ${version}` : ''}`, 'success');
+                } else {
+                    this.showNotification('Link de download não encontrado', 'error');
+                }
+            }
+
+            // Initialize on page load
+            static init() {
+                return new NiroohInstaller();
+            }
+        }
+
+        // Utility functions (ES5 compatible)
+        function showSection(sectionId) {
+            if (window.niroohInstaller) {
+                window.niroohInstaller.showSection(sectionId);
+            }
+        }
+
+        function copyToClipboard(elementId) {
+            if (window.niroohInstaller) {
+                window.niroohInstaller.copyToClipboard(elementId);
+            }
+        }
+
+        function downloadFile(platform, version) {
+            if (window.niroohInstaller) {
+                window.niroohInstaller.handleDownload(platform, version);
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.niroohInstaller = NiroohInstaller.init();
+            
+            // Handle initial URL hash
+            const hash = window.location.hash.substring(1);
+            if (hash && ['linux', 'windows'].includes(hash)) {
+                window.niroohInstaller.showSection(hash);
+            }
+        });
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', () => {
+            const hash = window.location.hash.substring(1);
+            const section = hash || 'home';
+            if (window.niroohInstaller) {
+                window.niroohInstaller.showSection(section);
+            }
+        });
+
+        // Add some additional animations and effects
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add hover effects to cards
+            const cards = document.querySelectorAll('.card-hover');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Add click effects to buttons
+            const buttons = document.querySelectorAll('button, a');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Create ripple effect
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        });
+
+        // Add CSS for ripple effect
+        const style = document.createElement('style');
+        style.textContent = `
+            button {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .ripple {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.6);
+                transform: scale(0);
+                animation: ripple-animation 0.6s linear;
+                pointer-events: none;
+            }
+            
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            
+            .animate-fade-in {
+                animation: fadeInUp 0.6s ease-out;
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
