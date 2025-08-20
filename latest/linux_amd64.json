@@ -1,6 +1,7 @@
 {
-    "version": "1.0.32",
+    "version": "1.0.33",
     "url": "nirooh-player-ubuntu-24.04.tar.gz",
     "exec" : "nirooh-player"
 }
+
 
