@@ -71,7 +71,7 @@
             </p>
             
             <!-- OS Selection Cards -->
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="grid mb-12 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <!-- Linux Card -->
                 <div class="bg-white rounded-2xl p-8 shadow-lg card-hover cursor-pointer" onclick="showSection('linux')">
                     <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl mx-auto mb-6 flex items-center justify-center">
@@ -106,6 +106,19 @@
                     </div>
                 </div>
             </div>
+
+            <div class="grid gap-8 max-w-4xl mx-auto">
+                <div class="bg-white rounded-2xl p-8 shadow-lg card-hover cursor-pointer animate-fade-in" onclick="showSection('windows')" style="transform: translateY(0px);">
+                    <div class="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                        <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.351"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-nirooh-dark mb-4">Android</h3>
+                    <p class="text-gray-600 mb-6">Sem instalacao, funciona apenas na versao Pay-per-use</p>
+                </div>
+            </div>
+
         </section>
 
         <!-- Linux Section -->
