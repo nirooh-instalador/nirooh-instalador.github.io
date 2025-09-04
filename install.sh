@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu  # Interrompe em caso de erro
+set -euo pipefail  # Interrompe em caso de erro e falhas em pipes
 umask 022  # Define permissoes seguras
 
 SISTEMA="Ubuntu"
@@ -14,6 +14,7 @@ ZIP_URL="$URL_NIROOH/$ZIP_NAME"
 EXECUTABLE_NAME="nirooh"
 INSTALL_DIR="$HOME/.local/bin"
 
+SYSTEMD_CONFIGURADO=0
 
 atualizar_path() {
     mkdir -p "$INSTALL_DIR"
@@ -57,9 +58,30 @@ identificar_sistema() {
         echo "Sistema não reconhecido"; exit 1
     fi
 
+    # Normaliza sistema para minúsculas e versão para MAIOR.MENOR
+    SISTEMA=$(printf "%s" "$SISTEMA" | tr '[:upper:]' '[:lower:]')
+    VERSAO=$(printf "%s" "$VERSAO" | awk -F. '{print $1 "." $2}')
+
     echo "Sistema detectado: $SISTEMA $VERSAO"
 }
 
+
+validar_versao() {
+    case "$SISTEMA" in
+        ubuntu)
+            case "$VERSAO" in
+                16.04|22.04|24.04)
+                    return 0 ;;
+                *)
+                    echo "Versão do Ubuntu não suportada: $VERSAO. Suportadas: 16.04, 22.04, 24.04." >&2
+                    exit 1 ;;
+            esac
+            ;;
+        *)
+            echo "Distribuição não suportada: $SISTEMA. Apenas Ubuntu (16.04, 22.04, 24.04) é suportado no momento." >&2
+            exit 1 ;;
+    esac
+}
 
 selecionar_zip() {
     if [ "$SISTEMA" = "ubuntu" ]; then
@@ -69,7 +91,13 @@ selecionar_zip() {
             ZIP_NAME="$ZIP_BASE-22-04.tar.gz"
         elif [ "$VERSAO" = "24.04" ]; then
             ZIP_NAME="$ZIP_BASE-24-04.tar.gz"
+        else
+            echo "Versão do Ubuntu não suportada: $VERSAO." >&2
+            exit 1
         fi
+    else
+        echo "Distribuição não suportada para seleção de pacote: $SISTEMA" >&2
+        exit 1
     fi
 
     ZIP_URL="$URL_NIROOH/$ZIP_NAME"
@@ -99,12 +127,20 @@ extract_tar() {
     echo "Descompactando o arquivo tar.gz..."
     tar -xzf "/tmp/$ZIP_NAME" -C "/tmp/"
 
-    if [ ! -f "/tmp/$EXECUTABLE_NAME" ]; then
-        echo "Executável não encontrado no tar.gz." >&2
+    # Tenta localizar o executável extraído (direto na raiz ou dentro de diretórios)
+    local EXTRAIDO_EXEC
+    if [ -f "/tmp/$EXECUTABLE_NAME" ]; then
+        EXTRAIDO_EXEC="/tmp/$EXECUTABLE_NAME"
+    else
+        EXTRAIDO_EXEC=$(find "/tmp" -maxdepth 3 -type f -name "$EXECUTABLE_NAME" -perm -u+x 2>/dev/null | head -n1 || true)
+    fi
+
+    if [ -z "${EXTRAIDO_EXEC:-}" ] || [ ! -f "$EXTRAIDO_EXEC" ]; then
+        echo "Executável não encontrado no conteúdo do tar.gz." >&2
         exit 1
     fi
 
-    mv "/tmp/$EXECUTABLE_NAME" "$INSTALL_DIR/"
+    mv "$EXTRAIDO_EXEC" "$INSTALL_DIR/"
     chmod +x "$INSTALL_DIR/$EXECUTABLE_NAME"
     echo "Executável instalado em $INSTALL_DIR/$EXECUTABLE_NAME."
 }
@@ -113,6 +149,12 @@ extract_tar() {
 setup_systemd() {
     local SERVICE_FILE="$HOME/.config/systemd/user/nirooh.service"
     mkdir -p "$HOME/.config/systemd/user/"
+
+    if ! command -v systemctl >/dev/null 2>&1; then
+        echo "systemctl não disponível; pulando configuração do systemd de usuário."
+        SYSTEMD_CONFIGURADO=0
+        return 0
+    fi
 
     cat > "$SERVICE_FILE" <<EOF
 [Unit]
@@ -130,9 +172,13 @@ Group=$USER
 WantedBy=default.target
 EOF
 
-    systemctl --user daemon-reload
-    systemctl --user enable --now nirooh.service
-    echo "Servico $SERVICE_FILE ativado"
+    if systemctl --user daemon-reload && systemctl --user enable --now nirooh.service; then
+        SYSTEMD_CONFIGURADO=1
+        echo "Servico $SERVICE_FILE ativado"
+    else
+        SYSTEMD_CONFIGURADO=0
+        echo "Falha ao ativar serviço de usuário via systemd; será usado fallback (cron) se habilitado."
+    fi
 }
 
 
@@ -180,17 +226,18 @@ setup_cron() {
 main() {
     atualizar_path
     identificar_sistema
+    validar_versao
     selecionar_zip
     enable_linger
     download_tar
     extract_tar
     setup_systemd
     arquivo_desktop
-    setup_cron
+    # Usa cron apenas se systemd não foi configurado
+    if [ "$SYSTEMD_CONFIGURADO" -ne 1 ]; then
+        setup_cron
+    fi
 }
 
 
 main
-
-
-"$INSTALL_DIR/$EXECUTABLE_NAME" &
