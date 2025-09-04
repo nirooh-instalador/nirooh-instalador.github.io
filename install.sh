@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail  # Interrompe em caso de erro e falhas em pipes
+set -eu # Interrompe em caso de erro e falhas em pipes
 umask 022  # Define permissoes seguras
 
 SISTEMA="Ubuntu"
